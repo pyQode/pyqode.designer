@@ -1,0 +1,10 @@
+#
+# MANIFEST.in
+#
+# Manifest template for creating the pyQode source distribution.
+include MANIFEST.in
+# setup, license and readme
+include setup.py
+include COPYING
+include COPYING.lesser
+include README.rst
