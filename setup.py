@@ -40,5 +40,6 @@ setup(
     author_email='colin.duquesnoy@gmail.com',
     description='Starts Qt Designer with pyqode plugins',
     long_description=readme(),
+    install_requires=["pyqode.core"],
     entry_points={'gui_scripts': [
                   'pyqode-designer = pyqode.designer:main']},)

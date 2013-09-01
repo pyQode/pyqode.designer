@@ -19,6 +19,7 @@ pyQode is licensed under the LGPL v3.
 
 Requires
 -------------
+ - pyqode.core
 
 On Windows you just need to install PyQt4 (it contains the Qt Designer and the python plugins dll)
 
