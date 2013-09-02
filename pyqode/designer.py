@@ -38,6 +38,7 @@ If pyqode is installed, this script is installed into the Scripts folder on
 windows or in a standard bin folder on linux. Open a terminal and run
 **pyqode_designer**.
 """
+import multiprocessing
 import os
 os.environ.setdefault("QT_API", "PyQt")
 import pkg_resources
@@ -81,6 +82,7 @@ def run(env):
     Runs qt designer with our customised environment.
     """
     p = None
+    env["PYQODE_NO_COMPLETION_SERVER"] = "1"
     try:
         p = subprocess.Popen(["designer"], env=env)
         if p.wait():
@@ -118,6 +120,7 @@ def main():
     """
     Runs the Qt Designer with the correct plugin path.
     """
+    multiprocessing.freeze_support()
     sep = get_pth_sep()
     env = os.environ.copy()
     set_plugins_path(env, sep)
@@ -126,5 +129,4 @@ def main():
 
 
 if __name__ == "__main__":
-    # import pyqode
     sys.exit(main())
