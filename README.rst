@@ -14,7 +14,7 @@ It uses pkg config to collect pyqode_plugins entry points and adapt the PYQTDESI
 License
 ----------------
 
-pyQode is licensed under the LGPL v3.
+pyQode is licensed under the MIT license.
 
 
 Requires
