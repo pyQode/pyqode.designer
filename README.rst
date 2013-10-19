@@ -64,6 +64,9 @@ If you don't want to install the package, you can just run the designer script m
     $ python pyqode/designer.py
 
 
+.. note:: On GNU/Linux, a desktop entry in the Development category will be
+          created when you install the package
+
 Resources
 ---------
 
