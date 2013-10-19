@@ -18,6 +18,7 @@ It uses pkg config to collect pyqode_plugins entry points and adapt the PYQTDESI
 
 
 .. image:: https://github.com/ColinDuquesnoy/pyqode.designer/blob/master/share/screenshot.png
+    :alt: Qt Designer + QGenericCodeEdit plugin
 
 License
 ----------------
