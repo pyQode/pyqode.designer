@@ -26,7 +26,12 @@
 """
 This setup script packages the core package of pyQode: pyqode-core
 """
-from setuptools import setup, find_packages
+try:
+    from setuptools import setup, find_packages
+except ImportError:
+    import ez_setup
+    ez_setup.use_setuptools()
+    from setuptools import setup, find_packages
 import sys
 
 
@@ -42,7 +47,7 @@ if sys.platform == "linux":
 setup(
     name='pyqode.designer',
     namespace_packages=['pyqode'],
-    version="1.0b1",
+    version="1.0",
     packages=find_packages(),
     data_files=data_files,
     keywords=["QCodeEditor", "PySide", "PyQt", "designer", "Qt"],
@@ -54,4 +59,16 @@ setup(
     long_description=readme(),
     install_requires=["pyqode.core"],
     entry_points={'gui_scripts': [
-                  'pyqode-designer = pyqode.designer:main']},)
+                  'pyqode-designer = pyqode.designer:main']},
+    classifiers=[
+          'Development Status :: 5 - Production/Stable',
+          'Environment :: X11 Applications :: Qt',
+          'Environment :: Win32 (MS Windows)',
+          'Intended Audience :: Developers',
+          'License :: OSI Approved :: MIT License',
+          'Operating System :: Microsoft :: Windows',
+          'Operating System :: POSIX :: Linux',
+          'Programming Language :: Python :: 2.7',
+          'Programming Language :: Python :: 3.2',
+          'Programming Language :: Python :: 3.3',]
+    )
