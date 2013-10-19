@@ -18,7 +18,6 @@ It uses pkg config to collect pyqode_plugins entry points and adapt the PYQTDESI
 
 
 .. image:: https://github.com/ColinDuquesnoy/pyqode.designer/blob/master/share/screenshot.png
-    :alt: Example of designer plugin usage.
 
 License
 ----------------
