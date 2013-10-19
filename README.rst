@@ -17,6 +17,9 @@ pyqode.designer is a single scripts that starts Qt Designer with the installed p
 It uses pkg config to collect pyqode_plugins entry points and adapt the PYQTDESIGNERPATH env var before starting Qt Designer.
 
 
+.. image:: https://raw.github.com/ColinDuquesnoy/pyqode.designer/develop/share/screenshot.png
+    :alt: Example of designer plugin usage.
+
 License
 ----------------
 
