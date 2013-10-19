@@ -27,10 +27,16 @@
 This setup script packages the core package of pyQode: pyqode-core
 """
 from setuptools import setup, find_packages
+import sys
 
 
 def readme():
     return str(open('README.rst').read())
+
+data_files = []
+if sys.platform == "linux":
+    data_files.append(('/usr/share/applications',
+                       ['share/pyqode_designer.desktop']))
 
 
 setup(
@@ -38,6 +44,7 @@ setup(
     namespace_packages=['pyqode'],
     version="1.0b1",
     packages=find_packages(),
+    data_files=data_files,
     keywords=["QCodeEditor", "PySide", "PyQt", "designer", "Qt"],
     url='https://github.com/ColinDuquesnoy/pyqode.designer',
     license='MIT',
