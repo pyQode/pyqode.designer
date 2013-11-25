@@ -81,3 +81,9 @@ Resources
 
 .. _pyQode: https://github.com/ColinDuquesnoy/pyqode.core
 .. _Jedi: https://github.com/davidhalter/jedi
+
+
+.. image:: https://d2weczhvl823v0.cloudfront.net/ColinDuquesnoy/pyqode.designer/trend.png
+   :alt: Bitdeli badge
+   :target: https://bitdeli.com/free
+
