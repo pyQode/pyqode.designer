@@ -1,19 +1,17 @@
 # CMake script for building debian packages:
+# To build the package locally run the following commands:
 #
-# To build a python3 package, run the following commands:
 #   - cd /path/to/src
 #   - mkdir build && build
 #   - cmake -DCPACK_GENERATOR=DEB ..
 #   - make package
 #
-# To build a python2 package, run the following commands:
-#   - cd /path/to/src
-#   - mkdir build && build
-#   - cmake -DTARGET_PYTHON_3=OFF -DCPACK_GENERATOR=DEB ..
-#   - make package
-#
 # To upload a PPA package, adapt DPUT_HOST to point to your ppa then run
-# make dput
+#   - cmake -DCPACK_GENERATOR=DEB ..
+#   - make dput
+#
+# Only the python 2 version is built because this requires python-qt4-dev which is
+# not available for python 3.
 #
 cmake_minimum_required( VERSION 2.8 )
 
@@ -22,8 +20,8 @@ cmake_minimum_required( VERSION 2.8 )
 set(PROJECT_NAME pyqode.designer)
 project(${PROJECT_NAME})
 set(VERSION_MAJOR 1)
-set(VERSION_MINOR 1)
-set(VERSION_PATCH 0)
+set(VERSION_MINOR 0)
+set(VERSION_PATCH 1)
 set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
 option(TARGET_PYTHON_3
        "ON to target Python >= 3, OFF to target Python 2.7" ON)
@@ -35,17 +33,10 @@ set( CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_LIST_DIR}/cmake )
 
 # ##############################################################
 
-if(${TARGET_PYTHON_3})
-    set(DEPENDS "python3-pyqode.core")
-    find_package(PythonInterp 3)
-    set(CPACK_TARGET_INTERPRETER_VERSION "python3")
-    set(PIP "pip-3.3")
-else()
-    set(DEPENDS "python-pyqode.core")
-    find_package(PythonInterp 2.7)
-    set(CPACK_TARGET_INTERPRETER_VERSION "python")
-    set(PIP "pip-2.7")
-endif()
+set(DEPENDS "python-pyqode.core, qt4-designer, python-qt4-dev")
+find_package(PythonInterp 2.7)
+set(CPACK_TARGET_INTERPRETER_VERSION "python")
+set(PIP "pip")
 
 configure_file(
   "${PROJECT_SOURCE_DIR}/share/pyqode_designer.desktop.in"
@@ -70,7 +61,7 @@ if(CMAKE_CPACK_COMMAND AND UNIX)
     set(CPACK_PACKAGE_CONTACT "Colin Duquesnoy <colin.duquesnoy@gmail.com>" CACHE STRING "Package maintainer and PGP signer.")
     set(CPACK_PACKAGE_VENDOR "Colin Duquesnoy")
     set(CPACK_PACKAGE_DISPLAY_NAME "pyqode.core ${VERSION}")
-    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Starts Qt Designer with pyQode plugins")
+    set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "pyQode qt designer plugins")
     set(CPACK_PACKAGE_VERSION "${VERSION}")
     set(CPACK_PACKAGE_VERSION_MAJOR ${VERSION_MAJOR})
     set(CPACK_PACKAGE_VERSION_MINOR ${VERSION_MINOR})
@@ -79,6 +70,7 @@ if(CMAKE_CPACK_COMMAND AND UNIX)
 
     # base
     set(CPACK_DEBIAN_BUILD_DEPENDS_UBUNTU debhelper cmake ${CPACK_TARGET_INTERPRETER_VERSION})
+    set(DEB_LONG_DESCRIPTION " Starts Qt Designer with pyQode plugins (only python 2.7 plugins are detected)")
 
     # get architecture
     set(CPACK_DEBIAN_PACKAGE_ARCHITECTURE "all")
