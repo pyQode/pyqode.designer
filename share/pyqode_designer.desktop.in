@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=PyQode Designer
+Comment=Starts Qt Designer with the pyQode plugins
+Exec=@CPACK_TARGET_INTERPRETER_VERSION@ /usr/bin/designer.py
+Terminal=false
+Type=Application
+Icon=designer-qt4
+Categories=Development;
