@@ -68,8 +68,7 @@ def set_plugins_path(env, sep):
     """
     paths = ""
     dict = {}
-    entry_points = list(pkg_resources.iter_entry_points("pyqode_plugins"))
-    if len(entry_points) == 0 and sys.platform != "win32":
+    if sys.platform != "win32":
         # if the packages were installed through apt-get, then there is no
         # entry point.
         # We can check for all directories in pyqode root dir to find plugins
