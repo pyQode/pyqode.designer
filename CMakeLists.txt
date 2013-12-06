@@ -17,7 +17,7 @@ set(PROJECT_NAME pyqode.designer)
 project(pyqode.designer)
 set(VERSION_MAJOR 1)
 set(VERSION_MINOR 0)
-set(VERSION_PATCH 2)
+set(VERSION_PATCH 0)
 set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
 
 # Make the scripts available in the 'cmake' directory available for the
@@ -52,7 +52,7 @@ install(FILES "${PROJECT_BINARY_DIR}/pyqode_designer.desktop"
 # ##############################################################
 
 if(CMAKE_CPACK_COMMAND AND UNIX)
-    set(DPUT_HOST "ppa:colin-duquesnoy/pyqode" CACHE STRING "PPA repository to upload the debian sources")
+    set(DPUT_HOST "ppa:pyqode/unstable" CACHE STRING "PPA repository to upload the debian sources")
 
     # Packing information
     set(CPACK_PACKAGE_NAME ${CPACK_TARGET_INTERPRETER_VERSION}-${PROJECT_NAME})
