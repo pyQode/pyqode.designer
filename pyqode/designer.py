@@ -82,11 +82,15 @@ def set_plugins_path(env, sep):
                         pth = os.path.join(dir_name, sub_dir)
                         paths += pth + sep
     for entrypoint in pkg_resources.iter_entry_points("pyqode_plugins"):
-        plugin = entrypoint.load()
-        pth = os.path.dirname(plugin.__file__)
-        if not pth in dict:
-            paths += pth + sep
-            dict[pth] = None
+        try:
+            plugin = entrypoint.load()
+        except pkg_resources.DistributionNotFound:
+            pass
+        else:
+            pth = os.path.dirname(plugin.__file__)
+            if not pth in dict:
+                paths += pth + sep
+                dict[pth] = None
     if 'PYQTDESIGNERPATH' in env:
         pyqt_designer_path = env['PYQTDESIGNERPATH']
         env['PYQTDESIGNERPATH'] = pyqt_designer_path + sep + paths
