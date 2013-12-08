@@ -68,12 +68,29 @@ def set_plugins_path(env, sep):
     """
     paths = ""
     dict = {}
+    if sys.platform != "win32":
+        # if the packages were installed through apt-get, then there is no
+        # entry point.
+        # We can check for all directories in pyqode root dir to find plugins
+        import pyqode
+        root = os.path.dirname(pyqode.__file__)
+        for dir_name in os.listdir(root):
+            dir_name = os.path.join(root, dir_name)
+            if os.path.isdir(dir_name) and not "_" in dir_name:
+                for sub_dir in os.listdir(dir_name):
+                    if sub_dir == "plugins":
+                        pth = os.path.join(dir_name, sub_dir)
+                        paths += pth + sep
     for entrypoint in pkg_resources.iter_entry_points("pyqode_plugins"):
-        plugin = entrypoint.load()
-        pth = os.path.dirname(plugin.__file__)
-        if not pth in dict:
-            paths += pth + sep
-            dict[pth] = None
+        try:
+            plugin = entrypoint.load()
+        except pkg_resources.DistributionNotFound:
+            pass
+        else:
+            pth = os.path.dirname(plugin.__file__)
+            if not pth in dict:
+                paths += pth + sep
+                dict[pth] = None
     if 'PYQTDESIGNERPATH' in env:
         pyqt_designer_path = env['PYQTDESIGNERPATH']
         env['PYQTDESIGNERPATH'] = pyqt_designer_path + sep + paths
