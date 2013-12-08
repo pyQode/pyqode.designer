@@ -16,7 +16,7 @@ cmake_minimum_required( VERSION 2.8 )
 set(PROJECT_NAME pyqode.designer)
 project(pyqode.designer)
 set(VERSION_MAJOR 1)
-set(VERSION_MINOR 0)
+set(VERSION_MINOR 1)
 set(VERSION_PATCH 0)
 set(VERSION ${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH})
 

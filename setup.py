@@ -47,7 +47,7 @@ if sys.platform == "linux":
 setup(
     name='pyqode.designer',
     namespace_packages=['pyqode'],
-    version="1.0",
+    version="1.1",
     packages=find_packages(),
     data_files=data_files,
     keywords=["QCodeEditor", "PySide", "PyQt", "designer", "Qt"],
