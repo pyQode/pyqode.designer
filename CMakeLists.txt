@@ -13,8 +13,7 @@ cmake_minimum_required( VERSION 2.8 )
 
 # ##############################################################
 
-set(PROJECT_NAME pyqode.designer)
-project(pyqode.designer)
+project(pyqode-designer)
 set(VERSION_MAJOR 1)
 set(VERSION_MINOR 1)
 set(VERSION_PATCH 0)
@@ -32,6 +31,7 @@ find_package(PythonInterp 2.7)
 set(CPACK_TARGET_INTERPRETER_VERSION "python")
 set(PIP "pip")
 
+# ##############################################################
 configure_file(
   "${PROJECT_SOURCE_DIR}/share/pyqode_designer.desktop.in"
   "${PROJECT_BINARY_DIR}/pyqode_designer.desktop"
@@ -39,20 +39,30 @@ configure_file(
 execute_process(COMMAND chmod 0644 ${PROJECT_BINARY_DIR}/pyqode_designer.desktop)
 
 # ##############################################################
+configure_file(
+  "${PROJECT_SOURCE_DIR}/share/${PROJECT_NAME}.1"
+  "${PROJECT_BINARY_DIR}/${PROJECT_NAME}.1"
+  )
+execute_process(COMMAND gzip -f -9 ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.1)
 
+# ##############################################################
 configure_file(
       "${CMAKE_SOURCE_DIR}/pyqode/designer.py"
       "${PROJECT_BINARY_DIR}/pyqode-designer"
       )
 
+# ##############################################################
+
 install(PROGRAMS "${PROJECT_BINARY_DIR}/pyqode-designer" DESTINATION bin)
 install(FILES "${PROJECT_BINARY_DIR}/pyqode_designer.desktop"
         DESTINATION share/applications )
+install(FILES ${PROJECT_BINARY_DIR}/${PROJECT_NAME}.1.gz
+        DESTINATION share/man/man1/ )
 
 # ##############################################################
 
 if(CMAKE_CPACK_COMMAND AND UNIX)
-    set(DPUT_HOST "ppa:pyqode/unstable" CACHE STRING "PPA repository to upload the debian sources")
+    set(DPUT_HOST "ppa:pyqode/stable" CACHE STRING "PPA repository to upload the debian sources")
 
     # Packing information
     set(CPACK_PACKAGE_NAME ${CPACK_TARGET_INTERPRETER_VERSION}-${PROJECT_NAME})
@@ -116,6 +126,21 @@ if(CMAKE_CPACK_COMMAND AND UNIX)
     endif()
     # The debian generator does not seem to use a correct name for the debian packages
     set(CPACK_PACKAGE_FILE_NAME "${CPACK_PACKAGE_NAME}_${VERSION_MAJOR}.${VERSION_MINOR}.${VERSION_PATCH}_${CPACK_DEBIAN_PACKAGE_ARCHITECTURE}")
+
+    if(CPACK_GENERATOR STREQUAL "DEB")
+        set(DEBIAN_CHANGELOG ${PROJECT_BINARY_DIR}/changelog)
+        set(RELEASE_PACKAGE_VERSION "${VERSION}")
+        set(RELEASE "all")
+        execute_process(COMMAND date -R  OUTPUT_VARIABLE DATE_TIME)
+        file(WRITE ${DEBIAN_CHANGELOG}
+            "${CPACK_PACKAGE_NAME} (${VERSION}) all; urgency=medium\n\n"
+            "${CPACK_DEBIAN_CHANGELOG}\n"
+            " -- ${CPACK_PACKAGE_CONTACT}  ${DATE_TIME}"
+            )
+        execute_process(COMMAND gzip -f -9 ${PROJECT_BINARY_DIR}/changelog)
+        install(FILES ${PROJECT_BINARY_DIR}/changelog.gz
+                DESTINATION share/doc/${CPACK_PACKAGE_NAME}/ )
+    endif()
 
     include(CPack)
     include(DebSourcePPA)
