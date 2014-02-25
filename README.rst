@@ -74,16 +74,12 @@ Resources
 -  `Source repository`_
 -  `Wiki`_
 
-.. _Downloads: https://github.com/ColinDuquesnoy/pyqode.designer/releases
-.. _Source repository: https://github.com/ColinDuquesnoy/pyqode.designer/
-.. _Wiki: https://github.com/ColinDuquesnoy/pyqode.core/wiki
+.. _Downloads: https://github.com/pyQode/pyqode.designer/releases
+.. _Source repository: https://github.com/pyQode/pyqode.designer/
+.. _Wiki: https://github.com/pyQode/pyqode.core/wiki
 
 
-.. _pyQode: https://github.com/ColinDuquesnoy/pyqode.core
+.. _pyQode: https://github.com/pyQode/pyqode.core
 .. _Jedi: https://github.com/davidhalter/jedi
 
-
-.. image:: https://d2weczhvl823v0.cloudfront.net/ColinDuquesnoy/pyqode.designer/trend.png
-   :alt: Bitdeli badge
-   :target: https://bitdeli.com/free
 

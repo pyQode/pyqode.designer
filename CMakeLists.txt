@@ -69,7 +69,7 @@ if(CMAKE_CPACK_COMMAND AND UNIX)
         DESTINATION share/doc/${CPACK_PACKAGE_NAME}/)
 
     set(CPACK_PACKAGE_CONTACT "Colin Duquesnoy <colin.duquesnoy@gmail.com>" CACHE STRING "Package maintainer and PGP signer.")
-    set(CPACK_PACKAGE_VENDOR "https://github.com/ColinDuquesnoy/pyqode.designer")
+    set(CPACK_PACKAGE_VENDOR "https://github.com/pyQode/pyqode.designer")
     set(CPACK_PACKAGE_DISPLAY_NAME "pyqode.designer ${VERSION}")
     set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Starts Qt Designer with pyQode plugins")
     set(CPACK_PACKAGE_VERSION "${VERSION}")

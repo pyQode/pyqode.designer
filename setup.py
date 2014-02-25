@@ -51,7 +51,7 @@ setup(
     packages=find_packages(),
     data_files=data_files,
     keywords=["QCodeEditor", "PySide", "PyQt", "designer", "Qt"],
-    url='https://github.com/ColinDuquesnoy/pyqode.designer',
+    url='https://github.com/pyQode/pyqode.designer',
     license='MIT',
     author='Colin Duquesnoy',
     author_email='colin.duquesnoy@gmail.com',
