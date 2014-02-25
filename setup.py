@@ -26,17 +26,13 @@
 """
 This setup script packages the core package of pyQode: pyqode-core
 """
-try:
-    from setuptools import setup, find_packages
-except ImportError:
-    import ez_setup
-    ez_setup.use_setuptools()
-    from setuptools import setup, find_packages
+from setuptools import setup, find_packages
 import sys
 
 
 def readme():
     return str(open('README.rst').read())
+
 
 data_files = []
 if sys.platform == "linux":
@@ -70,5 +66,6 @@ setup(
           'Operating System :: POSIX :: Linux',
           'Programming Language :: Python :: 2.7',
           'Programming Language :: Python :: 3.2',
-          'Programming Language :: Python :: 3.3',]
-    )
+          'Programming Language :: Python :: 3.3'
+    ]
+)
