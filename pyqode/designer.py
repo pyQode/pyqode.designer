@@ -86,8 +86,11 @@ def set_plugins_path(env, sep):
             plugin = entrypoint.load()
         except pkg_resources.DistributionNotFound:
             pass
+        except ImportError:
+            print('failed to import plugin: %r' % entrypoint)
         else:
             pth = os.path.dirname(plugin.__file__)
+            print('plugin loaded: %s' % pth)
             if not pth in dict:
                 paths += pth + sep
                 dict[pth] = None
@@ -106,21 +109,16 @@ def run(env):
     p = None
     env["PYQODE_NO_COMPLETION_SERVER"] = "1"
     try:
-        p = subprocess.Popen(["designer"], env=env)
+        p = subprocess.Popen(["designer-qt4"], env=env)
         if p.wait():
             raise OSError()
     except OSError:
         try:
-            p = subprocess.Popen(["designer-qt4"], env=env)
+            p = subprocess.Popen(["designer"], env=env)
             if p.wait():
                 raise OSError()
         except OSError:
-            try:
-                p = subprocess.Popen(["designer-qt4"], env=env)
-                if p.wait():
-                    raise OSError()
-            except OSError:
-                print("Failed to start Qt Designer")
+            print("Failed to start Qt Designer")
     if p:
         return p.wait()
     return -1
@@ -140,9 +138,8 @@ def check_env(env):
 
 def main():
     """
-    Runs the Qt Designer with the correct plugin path.
+    Runs the Qt Designer with an adapted plugin path.
     """
-    multiprocessing.freeze_support()
     sep = get_pth_sep()
     env = os.environ.copy()
     set_plugins_path(env, sep)
