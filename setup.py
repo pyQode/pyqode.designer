@@ -37,13 +37,15 @@ def readme():
 data_files = []
 if sys.platform == "linux":
     data_files.append(('/usr/share/applications',
-                       ['share/pyqode_designer.desktop']))
+                       ['share/pyqode_designer_qt4.desktop']))
+    data_files.append(('/usr/share/applications',
+                       ['share/pyqode_designer_qt5.desktop']))
 
 
 setup(
     name='pyqode.designer',
     namespace_packages=['pyqode'],
-    version="1.2",
+    version="2.0-dev",
     packages=find_packages(),
     data_files=data_files,
     keywords=["QCodeEditor", "PySide", "PyQt", "designer", "Qt"],
@@ -55,7 +57,8 @@ setup(
     long_description=readme(),
     install_requires=["pyqode.core"],
     entry_points={'gui_scripts': [
-                  'pyqode-designer = pyqode.designer:main']},
+        'pyqode-designer-qt4 = pyqode.designer.qt4:main',
+        'pyqode-designer-qt5 = pyqode.designer.qt5:main']},
     classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Environment :: X11 Applications :: Qt',

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=PyQode Qt5 Designer
+Comment=Starts Qt Designer with the pyQode plugins
+Exec=pyqode-designer-qt5
+Terminal=false
+Type=Application
+Icon=designer
+Categories=Development;

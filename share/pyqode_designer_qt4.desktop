@@ -1,8 +1,8 @@
 [Desktop Entry]
 Encoding=UTF-8
-Name=PyQode Designer
+Name=PyQode Qt4 Designer
 Comment=Starts Qt Designer with the pyQode plugins
-Exec=pyqode-designer
+Exec=pyqode-designer-qt4
 Terminal=false
 Type=Application
 Icon=designer-qt4

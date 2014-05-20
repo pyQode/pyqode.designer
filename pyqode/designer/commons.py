@@ -43,12 +43,14 @@ If pyqode is installed, this script is installed into the Scripts folder on
 windows or in a standard bin folder on linux. Open a terminal and run
 **pyqode_designer**.
 """
-import multiprocessing
+import logging
+logging.basicConfig(level=logging.INFO)
+_logger = logging.getLogger(__name__)
 import os
-os.environ.setdefault("QT_API", "PyQt")
 import pkg_resources
-import subprocess
 import sys
+
+from pyqode.qt import QtCore
 
 
 def get_pth_sep():
@@ -62,7 +64,7 @@ def get_pth_sep():
     return sep
 
 
-def set_plugins_path(env, sep):
+def get_plugins_path(sep):
     """
     Sets PYQTDESIGNERPATH
     """
@@ -87,65 +89,54 @@ def set_plugins_path(env, sep):
         except pkg_resources.DistributionNotFound:
             pass
         except ImportError:
-            print('failed to import plugin: %r' % entrypoint)
+            _logger.exception('failed to import plugin: %r', entrypoint)
         else:
             pth = os.path.dirname(plugin.__file__)
-            print('plugin loaded: %s' % pth)
+            _logger.info('plugin loaded: %s', pth)
             if not pth in dict:
                 paths += pth + sep
                 dict[pth] = None
-    if 'PYQTDESIGNERPATH' in env:
-        pyqt_designer_path = env['PYQTDESIGNERPATH']
-        env['PYQTDESIGNERPATH'] = pyqt_designer_path + sep + paths
+    if 'PYQTDESIGNERPATH' in os.environ:
+        pyqt_designer_path = os.environ['PYQTDESIGNERPATH'] + sep + paths
     else:
-        env['PYQTDESIGNERPATH'] = paths
-    print("pyQode plugins paths: %s" % env["PYQTDESIGNERPATH"])
+        pyqt_designer_path = paths
+    _logger.info("pyQode plugins paths: %s", pyqt_designer_path)
+    return pyqt_designer_path
 
 
-def run(env):
+def run(pyqt_designer_path):
     """
-    Runs qt designer with our customised environment.
+    Runs qt designer with PYQTDESIGNERPATH set to all loaded plugins.
     """
-    p = None
-    env["PYQODE_NO_COMPLETION_SERVER"] = "1"
-    try:
-        p = subprocess.Popen(["designer-qt4"], env=env)
-        if p.wait():
-            raise OSError()
-    except OSError:
-        try:
-            p = subprocess.Popen(["designer"], env=env)
-            if p.wait():
-                raise OSError()
-        except OSError:
-            print("Failed to start Qt Designer")
-    if p:
-        return p.wait()
-    return -1
+    base = os.path.dirname(__file__)
+    env = QtCore.QProcessEnvironment.systemEnvironment()
+    env.insert('PYQTDESIGNERPATH', pyqt_designer_path)
 
+    # Start Designer.
+    designer = QtCore.QProcess()
+    designer.setProcessEnvironment(env)
 
-def check_env(env):
-    """
-    Ensures all key and values are strings on windows.
-    """
-    if sys.platform == "win32":
-        win_env = {}
-        for key, value in env.items():
-            win_env[str(key)] = str(value)
-        env = win_env
-    return env
+    designer_bin = QtCore.QLibraryInfo.location(
+        QtCore.QLibraryInfo.BinariesPath)
+
+    if sys.platform == 'darwin':
+        designer_bin += '/Designer.app/Contents/MacOS/Designer'
+    else:
+        designer_bin += '/designer'
+
+    _logger.info('Qt Designer bin: %s' % designer_bin)
+
+    designer.start(designer_bin)
+    designer.waitForFinished(-1)
+    logger = logging.getLogger('designer')
+    logger.info(designer.readAllStandardOutput().data().decode('utf-8'))
+    logger.error(designer.readAllStandardError().data().decode('utf-8'))
+    sys.exit(designer.exitCode())
 
 
 def main():
     """
     Runs the Qt Designer with an adapted plugin path.
     """
-    sep = get_pth_sep()
-    env = os.environ.copy()
-    set_plugins_path(env, sep)
-    env = check_env(env)
-    return run(env)
-
-
-if __name__ == "__main__":
-    sys.exit(main())
+    pyqt_designer_path = get_plugins_path(get_pth_sep())
+    return run(pyqt_designer_path)
